@@ -37,8 +37,18 @@ def user
   @positions.each do |choice, square|
     if new_choice == choice
       @positions[choice] = 'X'
+      draw_board
     end
   end
+end
+
+def machine
+  puts 'Machine will choose a square ...'
+  sleep(2)
+
+  # while true
+  #
+  # end
 end
 
 def init
@@ -47,6 +57,7 @@ def init
   while true
     draw_board
     user
+    machine
   end
 end
 
