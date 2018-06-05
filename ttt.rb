@@ -1,3 +1,5 @@
+@game_end = true
+
 def board
   @positions = {
     'a1' => ' ',
@@ -30,21 +32,40 @@ def check_new_choice(choice)
   end
 end
 
-def user
-  puts 'Please choose a square:'
+def turn_X
+  puts 'Turn (X), please choose a square:'
   new_choice = gets.chomp.downcase
   check_new_choice(new_choice)
   @positions.each do |choice, square|
     if new_choice == choice
-      @positions[choice] = 'X'
-      draw_board
+      if square == ' '
+        @positions[choice] = 'X'
+        draw_board
+        turn_O
+      else
+        draw_board
+        turn_X
+      end
     end
   end
 end
 
-def machine
-  puts 'Machine will choose a square ...'
-  sleep(2)
+def turn_O
+  puts 'Turn (O), please choose a square:'
+  new_choice = gets.chomp.downcase
+  check_new_choice(new_choice)
+  @positions.each do |choice, square|
+    if new_choice == choice
+      if square == ' '
+        @positions[choice] = 'O'
+        draw_board
+        turn_X
+      else
+        draw_board
+        turn_O
+      end
+    end
+  end
 
   # while true
   #
@@ -54,10 +75,9 @@ end
 def init
   welcome
   board
-  while true
+  while @game_end
     draw_board
-    user
-    machine
+    turn_X
   end
 end
 
