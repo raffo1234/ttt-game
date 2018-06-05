@@ -14,6 +14,19 @@ def board
   }
 end
 
+def wins
+  [
+    [@positions['a1'], @positions['a2'], @positions['a3']],
+    [@positions['b1'], @positions['b2'], @positions['b3']],
+    [@positions['c1'], @positions['c2'], @positions['c3']],
+    [@positions['a1'], @positions['b1'], @positions['c1']],
+    [@positions['a2'], @positions['b2'], @positions['c2']],
+    [@positions['a3'], @positions['b3'], @positions['c3']],
+    [@positions['a1'], @positions['b2'], @positions['c3']],
+    [@positions['a3'], @positions['b2'], @positions['c1']]
+  ]
+end
+
 def draw_board
   puts
   puts "   1   2   3"
@@ -32,7 +45,25 @@ def check_new_choice(choice)
   end
 end
 
+def same_values(values)
+  values.uniq.length == 1
+end
+
+def check_for_winner
+  wins.each do |win|
+    if same_values(win) && any_empty_values(win)
+      puts 'Win!!!!'
+      exit
+    end
+  end
+end
+
+def any_empty_values(arr)
+  (arr & ['X', 'O']).any?
+end
+
 def turn_X
+  check_for_winner
   puts 'Turn (X), please choose a square:'
   new_choice = gets.chomp.downcase
   check_new_choice(new_choice)
@@ -51,6 +82,7 @@ def turn_X
 end
 
 def turn_O
+  check_for_winner
   puts 'Turn (O), please choose a square:'
   new_choice = gets.chomp.downcase
   check_new_choice(new_choice)
@@ -66,16 +98,13 @@ def turn_O
       end
     end
   end
-
-  # while true
-  #
-  # end
 end
 
 def init
   welcome
   board
   while @game_end
+    check_for_winner
     draw_board
     turn_X
   end
