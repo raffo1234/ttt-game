@@ -1,5 +1,3 @@
-@game_end = true
-
 def board
   @positions = {
     'a1' => ' ',
@@ -49,10 +47,22 @@ def same_values(values)
   values.uniq.length == 1
 end
 
+def available_squares
+  @positions.has_value?(' ')
+end
+
 def check_for_winner
   wins.each do |win|
     if same_values(win) && any_empty_values(win)
-      puts 'Win!!!!'
+      puts 'Win!!!'
+      exit
+    end
+    if same_values(win) && !available_squares
+      puts 'Win!!!'
+      exit
+    end
+    if !same_values(win) && !available_squares
+      puts 'Draw!!!'
       exit
     end
   end
@@ -103,7 +113,7 @@ end
 def init
   welcome
   board
-  while @game_end
+  while true
     check_for_winner
     draw_board
     turn_X
